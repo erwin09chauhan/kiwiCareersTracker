@@ -1,0 +1,24 @@
+## .NET
+bin/
+obj/
+out/
+
+## Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+
+## Test results
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+## Docker / env
+.env
+docker-compose.override.yml
+
+## OS files
+.DS_Store
+Thumbs.db
