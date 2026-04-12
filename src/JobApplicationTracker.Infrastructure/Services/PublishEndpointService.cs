@@ -1,20 +1,19 @@
 using JobApplicationTracker.Application.Common.Interfaces;
-using Microsoft.Extensions.Logging;
+using MassTransit;
 
 namespace JobApplicationTracker.Infrastructure.Services;
 
 public class PublishEndpointService : IPublishEndpointService
 {
-    private readonly ILogger<PublishEndpointService> _logger;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public PublishEndpointService(ILogger<PublishEndpointService> logger)
+    public PublishEndpointService(IPublishEndpoint publishEndpoint)
     {
-        _logger = logger;
+        _publishEndpoint = publishEndpoint;
     }
 
     public Task PublishAsync<T>(T message, CancellationToken cancellationToken) where T : class
     {
-        _logger.LogInformation("Publishing event {EventType}: {@Event}", typeof(T).Name, message);
-        return Task.CompletedTask;
+        return _publishEndpoint.Publish(message, cancellationToken);
     }
 }
