@@ -26,6 +26,9 @@ public static class DependencyInjection
         {
             busConfig.SetKebabCaseEndpointNameFormatter();
 
+            busConfig.AddConsumer<Messaging.Consumers.AuditLogConsumer>();
+            busConfig.AddConsumer<Messaging.Consumers.StatusChangeNotificationConsumer>();
+
             busConfig.UsingRabbitMq((context, cfg) =>
             {
                 var rabbitMqHost = configuration["RabbitMq:Host"] ?? "localhost";
