@@ -21,5 +21,11 @@ services:
       RABBITMQ_DEFAULT_USER: jobtracker
       RABBITMQ_DEFAULT_PASS: jobtracker
 
+  redis:
+    image: redis:7-alpine
+    container_name: jobtracker-redis
+    ports:
+      - "6379:6379"
+
 volumes:
   postgres_data:
