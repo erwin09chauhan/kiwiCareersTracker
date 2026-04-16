@@ -1,3 +1,4 @@
+using JobApplicationTracker.Api.Middleware;
 using JobApplicationTracker.Application;
 using JobApplicationTracker.Infrastructure;
 
@@ -22,6 +23,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<RateLimitingMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 
