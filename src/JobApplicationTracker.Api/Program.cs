@@ -2,6 +2,10 @@ using JobApplicationTracker.Api.Middleware;
 using JobApplicationTracker.Application;
 using JobApplicationTracker.Infrastructure;
 using Serilog;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +19,16 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService("JobApplicationTracker.Api"))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter(options =>
+        {
+            options.Endpoint = new Uri(builder.Configuration["OpenTelemetry:OtlpEndpoint"] ?? "http://localhost:4317");
+        }));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -36,5 +50,15 @@ app.UseHttpsRedirection();
 app.UseMiddleware<RateLimitingMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    Predicate = _ => false
+});
+
+app.MapHealthChecks("/health/detail", new HealthCheckOptions
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();

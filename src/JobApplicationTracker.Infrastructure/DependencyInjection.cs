@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
+using HealthChecks.RabbitMQ;
 
 namespace JobApplicationTracker.Infrastructure;
 
@@ -51,6 +52,17 @@ public static class DependencyInjection
             });
         });
 
+        services.AddHealthChecks()
+                    .AddNpgSql(configuration.GetConnectionString("Postgres")!, name: "postgres")
+                    .AddRedis(configuration.GetConnectionString("Redis")!, name: "redis")
+                    .AddRabbitMQ(sp =>
+                    {
+                        var factory = new RabbitMQ.Client.ConnectionFactory
+                        {
+                            Uri = new Uri($"amqp://{configuration["RabbitMq:Username"]}:{configuration["RabbitMq:Password"]}@{configuration["RabbitMq:Host"]}:5672")
+                        };
+                        return factory.CreateConnectionAsync();
+                    }, name: "rabbitmq");
         return services;
     }
 }
