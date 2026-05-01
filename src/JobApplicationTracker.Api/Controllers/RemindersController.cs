@@ -5,11 +5,13 @@ using JobApplicationTracker.Application.Reminders.Commands.UpdateReminder;
 using JobApplicationTracker.Application.Reminders.Queries.GetReminders;
 using JobApplicationTracker.Application.Reminders.Queries.GetUpcomingReminders;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobApplicationTracker.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/v1")]
 public class RemindersController : ControllerBase
 {

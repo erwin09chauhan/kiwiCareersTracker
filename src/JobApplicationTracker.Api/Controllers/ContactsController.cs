@@ -4,11 +4,13 @@ using JobApplicationTracker.Application.Contacts.Commands.UpdateContact;
 using JobApplicationTracker.Application.Contacts.Queries.GetContactById;
 using JobApplicationTracker.Application.Contacts.Queries.GetContacts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobApplicationTracker.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/v1/applications/{applicationId:guid}/contacts")]
 public class ContactsController : ControllerBase
 {

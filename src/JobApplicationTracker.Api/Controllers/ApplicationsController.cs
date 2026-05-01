@@ -6,11 +6,13 @@ using JobApplicationTracker.Application.Applications.Queries.GetApplicationById;
 using JobApplicationTracker.Application.Applications.Queries.GetApplications;
 using JobApplicationTracker.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobApplicationTracker.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/v1/applications")]
 public class ApplicationsController : ControllerBase
 {

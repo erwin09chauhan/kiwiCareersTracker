@@ -3,11 +3,13 @@ using JobApplicationTracker.Application.Notifications.Commands.MarkAllNotificati
 using JobApplicationTracker.Application.Notifications.Commands.MarkNotificationRead;
 using JobApplicationTracker.Application.Notifications.Queries.GetNotifications;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobApplicationTracker.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/v1/notifications")]
 public class NotificationsController : ControllerBase
 {

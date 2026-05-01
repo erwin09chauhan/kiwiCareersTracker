@@ -1,11 +1,13 @@
 using JobApplicationTracker.Application.AuditLogs.Queries.GetApplicationAuditLog;
 using JobApplicationTracker.Application.AuditLogs.Queries.GetAuditLog;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobApplicationTracker.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/v1")]
 public class AuditLogController : ControllerBase
 {

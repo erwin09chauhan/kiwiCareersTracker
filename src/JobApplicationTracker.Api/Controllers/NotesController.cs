@@ -3,11 +3,13 @@ using JobApplicationTracker.Application.Notes.Commands.DeleteNote;
 using JobApplicationTracker.Application.Notes.Commands.UpdateNote;
 using JobApplicationTracker.Application.Notes.Queries.GetNotes;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobApplicationTracker.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/v1/applications/{applicationId:guid}/notes")]
 public class NotesController : ControllerBase
 {
