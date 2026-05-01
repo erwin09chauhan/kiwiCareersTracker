@@ -5,8 +5,11 @@ namespace JobApplicationTracker.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    private readonly ICurrentUserService _currentUserService;
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ICurrentUserService currentUserService) : base(options)
     {
+        _currentUserService = currentUserService;
     }
 
     public DbSet<JobApplication> Applications => Set<JobApplication>();
@@ -43,6 +46,13 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
                 }
             }
         }
+
+        modelBuilder.Entity<JobApplication>().HasQueryFilter(a => a.UserId == _currentUserService.UserId);
+        modelBuilder.Entity<Contact>().HasQueryFilter(c => c.Application.UserId == _currentUserService.UserId);
+        modelBuilder.Entity<Reminder>().HasQueryFilter(r => r.Application.UserId == _currentUserService.UserId);
+        modelBuilder.Entity<Note>().HasQueryFilter(n => n.Application.UserId == _currentUserService.UserId);
+        modelBuilder.Entity<AuditLogEntry>().HasQueryFilter(l => l.Application.UserId == _currentUserService.UserId);
+        modelBuilder.Entity<Notification>().HasQueryFilter(n => n.UserId == _currentUserService.UserId);
 
         base.OnModelCreating(modelBuilder);
     }
