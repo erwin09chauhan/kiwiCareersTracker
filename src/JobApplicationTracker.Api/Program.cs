@@ -62,7 +62,10 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
     });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<JobApplicationTracker.Api.OpenApi.BearerSecuritySchemeTransformer>();
+});
 
 var app = builder.Build();
 app.UseSerilogRequestLogging();
