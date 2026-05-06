@@ -90,3 +90,5 @@ app.MapHealthChecks("/health/detail", new HealthCheckOptions
 });
 
 app.Run();
+
+public partial class Program { }
