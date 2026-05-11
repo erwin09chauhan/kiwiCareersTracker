@@ -2,6 +2,7 @@ using System.Text;
 using JobApplicationTracker.Api.Middleware;
 using JobApplicationTracker.Application;
 using JobApplicationTracker.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -68,6 +69,13 @@ builder.Services.AddOpenApi(options =>
 });
 
 var app = builder.Build();
+
+if (builder.Configuration.GetValue<bool>("ApplyMigrationsOnStartup"))
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<JobApplicationTracker.Infrastructure.Persistence.ApplicationDbContext>();
+    await dbContext.Database.MigrateAsync();
+}
 app.UseSerilogRequestLogging();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
@@ -95,3 +103,5 @@ app.MapHealthChecks("/health/detail", new HealthCheckOptions
 app.Run();
 
 public partial class Program { }
+
+
