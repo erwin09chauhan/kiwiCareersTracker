@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: jobapplicationtracker-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__Postgres
+        sync: false
+      - key: ConnectionStrings__Redis
+        sync: false
+      - key: RabbitMq__Host
+        sync: false
+      - key: RabbitMq__Username
+        sync: false
+      - key: RabbitMq__Password
+        sync: false
+      - key: Jwt__Secret
+        generateValue: true
+      - key: Jwt__Issuer
+        value: JobApplicationTracker
+      - key: Jwt__Audience
+        value: JobApplicationTrackerClients
+      - key: Seq__ServerUrl
+        sync: false
+      - key: OpenTelemetry__OtlpEndpoint
+        sync: false
