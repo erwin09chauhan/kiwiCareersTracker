@@ -68,6 +68,16 @@ builder.Services.AddOpenApi(options =>
     options.AddDocumentTransformer<JobApplicationTracker.Api.OpenApi.BearerSecuritySchemeTransformer>();
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        var origins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+        policy.WithOrigins(origins)
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
 
 if (builder.Configuration.GetValue<bool>("ApplyMigrationsOnStartup"))
@@ -86,6 +96,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseMiddleware<RateLimitingMiddleware>();
+app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -103,5 +114,7 @@ app.MapHealthChecks("/health/detail", new HealthCheckOptions
 app.Run();
 
 public partial class Program { }
+
+
 
 
