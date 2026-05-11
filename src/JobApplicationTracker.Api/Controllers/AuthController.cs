@@ -2,6 +2,7 @@ using JobApplicationTracker.Application.Auth.Commands.Login;
 using JobApplicationTracker.Application.Auth.Commands.Logout;
 using JobApplicationTracker.Application.Auth.Commands.RefreshToken;
 using JobApplicationTracker.Application.Auth.Commands.Register;
+using JobApplicationTracker.Application.Users.Queries.GetCurrentUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -56,5 +57,13 @@ public class AuthController : ControllerBase
 
         await _sender.Send(new LogoutCommand(parsedUserId), cancellationToken);
         return NoContent();
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    public async Task<IActionResult> Me(CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(new GetCurrentUserQuery(), cancellationToken);
+        return Ok(result);
     }
 }
