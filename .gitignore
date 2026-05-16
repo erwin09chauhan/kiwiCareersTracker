@@ -22,3 +22,10 @@ docker-compose.override.yml
 ## OS files
 .DS_Store
 Thumbs.db
+
+## Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vite/
