@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import axios from "axios";
 import { useAuthStore } from "@/store/authStore";
@@ -10,11 +10,13 @@ export function RequireAuth() {
   const setAuth = useAuthStore((s) => s.setAuth);
   const clearAuth = useAuthStore((s) => s.clearAuth);
   const hasHydrated = useAuthStore((s) => s.hasHydrated);
+  const refreshStarted = useRef(false);
 
   const needsRefresh = hasHydrated && !accessToken && !!refreshToken;
 
   useEffect(() => {
-    if (!needsRefresh) return;
+    if (!needsRefresh || refreshStarted.current) return;
+    refreshStarted.current = true;
 
     axios
       .post<AuthResult>(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
