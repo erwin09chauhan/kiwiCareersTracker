@@ -1,14 +1,16 @@
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
-import type { AuthResult } from "@/types/auth"
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { AuthResult } from "@/types/auth";
 
 interface AuthState {
-  accessToken: string | null
-  refreshToken: string | null
-  email: string | null
-  userId: string | null
-  setAuth: (result: AuthResult) => void
-  clearAuth: () => void
+  accessToken: string | null;
+  refreshToken: string | null;
+  email: string | null;
+  userId: string | null;
+  setAuth: (result: AuthResult) => void;
+  clearAuth: () => void;
+  hasHydrated: boolean;
+  setHasHydrated: (v: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -26,7 +28,14 @@ export const useAuthStore = create<AuthState>()(
           userId: result.userId,
         }),
       clearAuth: () =>
-        set({ accessToken: null, refreshToken: null, email: null, userId: null }),
+        set({
+          accessToken: null,
+          refreshToken: null,
+          email: null,
+          userId: null,
+        }),
+      hasHydrated: false,
+      setHasHydrated: (v) => set({ hasHydrated: v }),
     }),
     {
       name: "auth-storage",
@@ -35,6 +44,9 @@ export const useAuthStore = create<AuthState>()(
         email: state.email,
         userId: state.userId,
       }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     },
   ),
-)
+);
