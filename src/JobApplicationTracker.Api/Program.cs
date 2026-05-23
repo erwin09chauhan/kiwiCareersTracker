@@ -86,6 +86,7 @@ if (builder.Configuration.GetValue<bool>("ApplyMigrationsOnStartup"))
     var dbContext = scope.ServiceProvider.GetRequiredService<JobApplicationTracker.Infrastructure.Persistence.ApplicationDbContext>();
     await dbContext.Database.MigrateAsync();
 }
+app.UseCors("Frontend");
 app.UseSerilogRequestLogging();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
@@ -96,7 +97,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseMiddleware<RateLimitingMiddleware>();
-app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
