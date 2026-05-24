@@ -32,6 +32,7 @@ import {
 import { ContactsTab } from "./contacts/ContactsTab";
 import { NotesTab } from "./notes/NotesTab";
 import { RemindersTab } from "./reminders/RemindersTab";
+import { AuditLogTab } from "./audit/AuditLogTab";
 
 export function ApplicationDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -168,7 +169,9 @@ export function ApplicationDetailPage() {
         <TabsContent value="reminders">
           <RemindersTab applicationId={app.id} />
         </TabsContent>
-        <TabsContent value="audit">Audit log coming soon.</TabsContent>
+        <TabsContent value="audit">
+          <AuditLogTab applicationId={app.id} />
+        </TabsContent>
       </Tabs>{" "}
     </div>
   );
