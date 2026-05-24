@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ContactsTab } from "./contacts/ContactsTab";
 import { NotesTab } from "./notes/NotesTab";
+import { RemindersTab } from "./reminders/RemindersTab";
 
 export function ApplicationDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -91,7 +92,6 @@ export function ApplicationDetailPage() {
           Back to applications
         </Link>
       </div>
-
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h2 className="text-2xl font-semibold tracking-tight">
@@ -152,23 +152,24 @@ export function ApplicationDetailPage() {
           </AlertDialog>
         </div>
       </div>
-
       <Tabs defaultValue="contacts">
         <TabsList>
           <TabsTrigger value="contacts">Contacts</TabsTrigger>
-          <TabsContent value="notes">
-            <NotesTab applicationId={app.id} />
-          </TabsContent>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
           <TabsTrigger value="reminders">Reminders</TabsTrigger>
           <TabsTrigger value="audit">Audit Log</TabsTrigger>
         </TabsList>
         <TabsContent value="contacts">
           <ContactsTab applicationId={app.id} />
         </TabsContent>
-        <TabsContent value="notes">Notes coming soon.</TabsContent>
-        <TabsContent value="reminders">Reminders coming soon.</TabsContent>
+        <TabsContent value="notes">
+          <NotesTab applicationId={app.id} />
+        </TabsContent>
+        <TabsContent value="reminders">
+          <RemindersTab applicationId={app.id} />
+        </TabsContent>
         <TabsContent value="audit">Audit log coming soon.</TabsContent>
-      </Tabs>
+      </Tabs>{" "}
     </div>
   );
 }
