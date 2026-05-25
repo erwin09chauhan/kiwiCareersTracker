@@ -30,6 +30,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ContactsTab } from "./contacts/ContactsTab";
+import { NotesTab } from "./notes/NotesTab";
 
 export function ApplicationDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -155,7 +156,9 @@ export function ApplicationDetailPage() {
       <Tabs defaultValue="contacts">
         <TabsList>
           <TabsTrigger value="contacts">Contacts</TabsTrigger>
-          <TabsTrigger value="notes">Notes</TabsTrigger>
+          <TabsContent value="notes">
+            <NotesTab applicationId={app.id} />
+          </TabsContent>
           <TabsTrigger value="reminders">Reminders</TabsTrigger>
           <TabsTrigger value="audit">Audit Log</TabsTrigger>
         </TabsList>
