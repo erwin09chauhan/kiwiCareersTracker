@@ -10,4 +10,5 @@ public class Reminder : Common.BaseEntity
     public DateTime DueDateUtc { get; set; }
     public bool IsCompleted { get; set; }
     public DateTime? CompletedAtUtc { get; set; }
+    public DateTime? NotifiedAtUtc { get; set; }
 }

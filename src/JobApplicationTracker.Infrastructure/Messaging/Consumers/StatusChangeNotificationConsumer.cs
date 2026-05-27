@@ -9,11 +9,13 @@ namespace JobApplicationTracker.Infrastructure.Messaging.Consumers;
 public class StatusChangeNotificationConsumer : IConsumer<ApplicationStatusChangedEvent>
 {
     private readonly IApplicationDbContext _context;
+    private readonly INotificationPusher _notificationPusher;
     private readonly ILogger<StatusChangeNotificationConsumer> _logger;
 
-    public StatusChangeNotificationConsumer(IApplicationDbContext context, ILogger<StatusChangeNotificationConsumer> logger)
+    public StatusChangeNotificationConsumer(IApplicationDbContext context, INotificationPusher notificationPusher, ILogger<StatusChangeNotificationConsumer> logger)
     {
         _context = context;
+        _notificationPusher = notificationPusher;
         _logger = logger;
     }
 
@@ -31,6 +33,9 @@ public class StatusChangeNotificationConsumer : IConsumer<ApplicationStatusChang
 
         _context.Notifications.Add(notification);
         await _context.SaveChangesAsync(context.CancellationToken);
+
+        await _notificationPusher.PushNotificationAsync(
+            notification.UserId, notification.Title, notification.Message, notification.RelatedApplicationId, context.CancellationToken);
 
         _logger.LogInformation(
             "Notification created for user {UserId} regarding application {ApplicationId}",

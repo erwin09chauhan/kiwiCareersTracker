@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import { Bell, LogOut, Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
 import { authApi } from "@/api/auth";
 import { Button } from "@/components/ui/button";
+import { NotificationsDropdown } from "./NotificationsDropdown";
 
 const navItems = [
   { to: "/", label: "Dashboard", end: true },
@@ -118,9 +119,7 @@ export function AppLayout() {
       {/* Main content */}
       <div className="flex-1">
         <header className="flex h-14 items-center justify-end border-b px-4 md:px-6">
-          <Button variant="ghost" size="icon">
-            <Bell className="size-4" />
-          </Button>
+          <NotificationsDropdown />
         </header>
         <main className="p-4 md:p-6">
           <Outlet />

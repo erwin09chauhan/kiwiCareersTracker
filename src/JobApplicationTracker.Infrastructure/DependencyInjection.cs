@@ -1,4 +1,5 @@
 using JobApplicationTracker.Application.Common.Interfaces;
+using JobApplicationTracker.Infrastructure.BackgroundJobs;
 using JobApplicationTracker.Infrastructure.Persistence;
 using JobApplicationTracker.Infrastructure.Services;
 using MassTransit;
@@ -30,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IPublishEndpointService, PublishEndpointService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddHostedService<ReminderNotificationService>();
 
         services.AddMassTransit(busConfig =>
         {
