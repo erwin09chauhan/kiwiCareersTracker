@@ -31,6 +31,8 @@ function toLocalInput(iso: string) {
   return local.toISOString().slice(0, 16)
 }
 
+const minDueDate = toLocalInput(new Date().toISOString())
+
 export function ReminderDialog({ applicationId, reminder, trigger }: ReminderDialogProps) {
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
@@ -99,6 +101,7 @@ export function ReminderDialog({ applicationId, reminder, trigger }: ReminderDia
               id="reminder-due"
               type="datetime-local"
               required
+              min={minDueDate}
               value={form.dueDateUtc}
               onChange={(e) => setForm((f) => ({ ...f, dueDateUtc: e.target.value }))}
             />

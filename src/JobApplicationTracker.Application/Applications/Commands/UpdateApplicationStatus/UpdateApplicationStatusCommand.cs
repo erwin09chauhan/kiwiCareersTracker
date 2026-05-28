@@ -16,15 +16,18 @@ public class UpdateApplicationStatusCommandHandler : IRequestHandler<UpdateAppli
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUser;
     private readonly IPublishEndpointService _publishEndpoint;
+    private readonly ICacheService _cache;
 
     public UpdateApplicationStatusCommandHandler(
         IApplicationDbContext context,
         ICurrentUserService currentUser,
-        IPublishEndpointService publishEndpoint)
+        IPublishEndpointService publishEndpoint,
+        ICacheService cache)
     {
         _context = context;
         _currentUser = currentUser;
         _publishEndpoint = publishEndpoint;
+        _cache = cache;
     }
 
     public async Task Handle(UpdateApplicationStatusCommand request, CancellationToken cancellationToken)
@@ -38,6 +41,8 @@ public class UpdateApplicationStatusCommandHandler : IRequestHandler<UpdateAppli
         entity.UpdatedAtUtc = DateTime.UtcNow;
 
         await _context.SaveChangesAsync(cancellationToken);
+
+        await _cache.RemoveAsync($"dashboard:summary:{entity.UserId}", cancellationToken);
 
         await _publishEndpoint.PublishAsync(new ApplicationStatusChangedEvent(
             entity.Id,

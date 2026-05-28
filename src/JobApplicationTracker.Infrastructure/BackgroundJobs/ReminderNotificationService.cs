@@ -10,8 +10,8 @@ namespace JobApplicationTracker.Infrastructure.BackgroundJobs;
 
 public class ReminderNotificationService : BackgroundService
 {
-    private static readonly TimeSpan PollInterval = TimeSpan.FromMinutes(5);
-    private static readonly TimeSpan DueWindow = TimeSpan.FromHours(24);
+    private static readonly TimeSpan PollInterval = TimeSpan.FromMinutes(1);
+    private static readonly TimeSpan DueWindow = TimeSpan.FromMinutes(5);
 
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<ReminderNotificationService> _logger;

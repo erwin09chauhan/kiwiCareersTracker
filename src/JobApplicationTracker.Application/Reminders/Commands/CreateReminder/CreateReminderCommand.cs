@@ -19,7 +19,7 @@ public class CreateReminderCommandValidator : AbstractValidator<CreateReminderCo
         RuleFor(x => x.ApplicationId).NotEmpty();
         RuleFor(x => x.Title).NotEmpty().MaximumLength(200);
         RuleFor(x => x.Description).MaximumLength(1000);
-        RuleFor(x => x.DueDateUtc).NotEmpty();
+        RuleFor(x => x.DueDateUtc).NotEmpty().GreaterThan(DateTime.UtcNow).WithMessage("Due date must be in the future.");
     }
 }
 
