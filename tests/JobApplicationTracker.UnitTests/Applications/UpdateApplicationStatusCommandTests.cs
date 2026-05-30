@@ -34,8 +34,9 @@ public class UpdateApplicationStatusCommandTests
         currentUser.UserId.Returns(userId);
 
         var publishEndpoint = Substitute.For<IPublishEndpointService>();
+        var cache = Substitute.For<ICacheService>();
 
-        var handler = new UpdateApplicationStatusCommandHandler(context, currentUser, publishEndpoint);
+        var handler = new UpdateApplicationStatusCommandHandler(context, currentUser, publishEndpoint, cache);
 
         var command = new UpdateApplicationStatusCommand(application.Id, ApplicationStatus.Interview, "Moved to interview");
 
@@ -60,8 +61,9 @@ public class UpdateApplicationStatusCommandTests
 
         var currentUser = Substitute.For<ICurrentUserService>();
         var publishEndpoint = Substitute.For<IPublishEndpointService>();
+        var cache = Substitute.For<ICacheService>();
 
-        var handler = new UpdateApplicationStatusCommandHandler(context, currentUser, publishEndpoint);
+        var handler = new UpdateApplicationStatusCommandHandler(context, currentUser, publishEndpoint, cache);
 
         var command = new UpdateApplicationStatusCommand(Guid.NewGuid(), ApplicationStatus.Interview, null);
 

@@ -3,6 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import axios from "axios";
 import { useAuthStore } from "@/store/authStore";
 import type { AuthResult } from "@/types/auth";
+import { LoadingState } from "@/components/common/LoadingState";
 
 export function RequireAuth() {
   const accessToken = useAuthStore((s) => s.accessToken);
@@ -28,8 +29,8 @@ export function RequireAuth() {
 
   if (!hasHydrated || needsRefresh) {
     return (
-      <div className="flex min-h-svh items-center justify-center text-sm text-muted-foreground">
-        Loading...
+      <div className="flex min-h-svh items-center justify-center">
+        <LoadingState />
       </div>
     );
   }

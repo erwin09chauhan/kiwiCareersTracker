@@ -3,9 +3,9 @@ services:
     image: postgres:16-alpine
     container_name: jobtracker-postgres
     environment:
-      POSTGRES_DB: jobtracker
-      POSTGRES_USER: jobtracker
-      POSTGRES_PASSWORD: jobtracker
+      POSTGRES_DB: ${POSTGRES_DB:-jobtracker}
+      POSTGRES_USER: ${POSTGRES_USER:-jobtracker}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jobtracker}
     ports:
       - "5432:5432"
     volumes:
@@ -18,8 +18,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: jobtracker
-      RABBITMQ_DEFAULT_PASS: jobtracker
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-jobtracker}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-jobtracker}
 
   redis:
     image: redis:7-alpine

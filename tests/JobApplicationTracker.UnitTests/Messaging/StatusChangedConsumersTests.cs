@@ -1,5 +1,6 @@
 using JobApplicationTracker.Domain.Enums;
 using JobApplicationTracker.Domain.Events;
+using JobApplicationTracker.Application.Common.Interfaces;
 using JobApplicationTracker.Infrastructure.Messaging.Consumers;
 using JobApplicationTracker.UnitTests.Common;
 using FluentAssertions;
@@ -7,6 +8,7 @@ using MassTransit;
 using MassTransit.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 
 namespace JobApplicationTracker.UnitTests.Messaging;
 
@@ -60,7 +62,8 @@ public class StatusChangedConsumersTests
         await using var context = TestDbContextFactory.Create();
 
         await using var provider = new ServiceCollection()
-            .AddSingleton<JobApplicationTracker.Application.Common.Interfaces.IApplicationDbContext>(context)
+            .AddSingleton<IApplicationDbContext>(context)
+            .AddSingleton(Substitute.For<INotificationPusher>())
             .AddMassTransitTestHarness(cfg =>
             {
                 cfg.AddConsumer<StatusChangeNotificationConsumer>();
