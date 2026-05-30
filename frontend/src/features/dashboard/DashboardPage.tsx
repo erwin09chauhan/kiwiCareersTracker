@@ -1,20 +1,20 @@
-import { useQuery } from "@tanstack/react-query"
-import { dashboardApi } from "@/api/dashboard"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { APPLICATION_STATUSES } from "@/types/application"
-import { statusLabel, statusBadgeClass } from "@/lib/status"
-import { formatDateTime } from "@/lib/date"
+import { useQuery } from "@tanstack/react-query";
+import { dashboardApi } from "@/api/dashboard";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { APPLICATION_STATUSES } from "@/types/application";
+import { statusLabel } from "@/lib/status";
+import { formatDateTime } from "@/lib/date";
 
 export function DashboardPage() {
   const summaryQuery = useQuery({
     queryKey: ["dashboard", "summary"],
     queryFn: dashboardApi.getSummary,
-  })
+  });
 
   const activityQuery = useQuery({
     queryKey: ["dashboard", "activity"],
     queryFn: () => dashboardApi.getActivity(20),
-  })
+  });
 
   return (
     <div className="space-y-6">
@@ -37,7 +37,9 @@ export function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-semibold">
-                {summaryQuery.isLoading ? "-" : summaryQuery.data?.countsByStatus[status] ?? 0}
+                {summaryQuery.isLoading
+                  ? "-"
+                  : (summaryQuery.data?.countsByStatus[status] ?? 0)}
               </div>
             </CardContent>
           </Card>
@@ -57,11 +59,16 @@ export function DashboardPage() {
           )}
           <ul className="divide-y">
             {activityQuery.data?.map((item, idx) => (
-              <li key={idx} className="flex items-start justify-between gap-4 py-3">
+              <li
+                key={idx}
+                className="flex items-start justify-between gap-4 py-3"
+              >
                 <div>
                   <p className="text-sm font-medium">{item.title}</p>
                   {item.detail && (
-                    <p className="text-sm text-muted-foreground">{item.detail}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {item.detail}
+                    </p>
                   )}
                 </div>
                 <span className="shrink-0 text-xs text-muted-foreground">
@@ -73,5 +80,5 @@ export function DashboardPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
