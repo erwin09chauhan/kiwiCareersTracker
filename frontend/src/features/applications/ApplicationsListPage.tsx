@@ -5,6 +5,7 @@ import { toast } from "sonner"
 import { applicationsApi } from "@/api/applications"
 import { APPLICATION_STATUSES, type ApplicationStatus } from "@/types/application"
 import { statusLabel, statusBadgeClass } from "@/lib/status"
+import { formatDate } from "@/lib/date"
 import { AddApplicationDialog } from "@/features/applications/AddApplicationDialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -146,7 +147,7 @@ export function ApplicationsListPage() {
                     </SelectContent>
                   </Select>
                 </TableCell>
-                <TableCell>{new Date(app.appliedDate).toLocaleDateString()}</TableCell>
+                <TableCell>{formatDate(app.appliedDate)}</TableCell>
               </TableRow>
             ))}
             {!query.isLoading && applications.length === 0 && (

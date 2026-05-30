@@ -3,6 +3,7 @@ import { dashboardApi } from "@/api/dashboard"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { APPLICATION_STATUSES } from "@/types/application"
 import { statusLabel, statusBadgeClass } from "@/lib/status"
+import { formatDateTime } from "@/lib/date"
 
 export function DashboardPage() {
   const summaryQuery = useQuery({
@@ -64,7 +65,7 @@ export function DashboardPage() {
                   )}
                 </div>
                 <span className="shrink-0 text-xs text-muted-foreground">
-                  {new Date(item.createdAtUtc).toLocaleString()}
+                  {formatDateTime(item.createdAtUtc)}
                 </span>
               </li>
             ))}

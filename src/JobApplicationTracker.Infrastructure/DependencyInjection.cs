@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using HealthChecks.RabbitMQ;
+using System.Security.Authentication;
 
 namespace JobApplicationTracker.Infrastructure;
 
@@ -42,15 +43,38 @@ public static class DependencyInjection
 
             busConfig.UsingRabbitMq((context, cfg) =>
             {
-                var rabbitMqHost = configuration["RabbitMq:Host"] ?? "localhost";
-                var rabbitMqUser = configuration["RabbitMq:Username"] ?? "guest";
-                var rabbitMqPass = configuration["RabbitMq:Password"] ?? "guest";
+                var rabbitMqConnectionString = configuration["RabbitMq:ConnectionString"];
 
-                cfg.Host(rabbitMqHost, "/", h =>
+                if (!string.IsNullOrEmpty(rabbitMqConnectionString))
                 {
-                    h.Username(rabbitMqUser);
-                    h.Password(rabbitMqPass);
-                });
+                    var uri = new Uri(rabbitMqConnectionString);
+                    var vhost = uri.AbsolutePath.Length > 1 ? uri.AbsolutePath.TrimStart('/') : "/";
+                    var userInfo = uri.UserInfo.Split(':');
+                    var port = uri.Port != -1 ? (ushort)uri.Port : (ushort)(uri.Scheme == "amqps" ? 5671 : 5672);
+
+                    cfg.Host(uri.Host, port, vhost, h =>
+                    {
+                        h.Username(userInfo[0]);
+                        h.Password(userInfo.Length > 1 ? userInfo[1] : "");
+
+                        if (uri.Scheme == "amqps")
+                        {
+                            h.UseSsl(s => s.Protocol = SslProtocols.Tls12);
+                        }
+                    });
+                }
+                else
+                {
+                    var rabbitMqHost = configuration["RabbitMq:Host"] ?? "localhost";
+                    var rabbitMqUser = configuration["RabbitMq:Username"] ?? "guest";
+                    var rabbitMqPass = configuration["RabbitMq:Password"] ?? "guest";
+
+                    cfg.Host(rabbitMqHost, "/", h =>
+                    {
+                        h.Username(rabbitMqUser);
+                        h.Password(rabbitMqPass);
+                    });
+                }
 
                 cfg.ConfigureEndpoints(context);
             });
@@ -61,9 +85,12 @@ public static class DependencyInjection
                     .AddRedis(configuration.GetConnectionString("Redis")!, name: "redis")
                     .AddRabbitMQ(sp =>
                     {
+                        var rabbitMqConnectionString = configuration["RabbitMq:ConnectionString"]
+                            ?? $"amqp://{configuration["RabbitMq:Username"]}:{configuration["RabbitMq:Password"]}@{configuration["RabbitMq:Host"]}:5672";
+
                         var factory = new RabbitMQ.Client.ConnectionFactory
                         {
-                            Uri = new Uri($"amqp://{configuration["RabbitMq:Username"]}:{configuration["RabbitMq:Password"]}@{configuration["RabbitMq:Host"]}:5672")
+                            Uri = new Uri(rabbitMqConnectionString)
                         };
                         return factory.CreateConnectionAsync();
                     }, name: "rabbitmq");

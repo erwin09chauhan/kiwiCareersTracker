@@ -6,6 +6,7 @@ import type { Reminder } from "@/types/reminder";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ReminderDialog } from "./ReminderDialog";
+import { formatDateTime } from "@/lib/date";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,10 +68,10 @@ function ReminderItem({
             </p>
           )}
           <p className="text-xs text-muted-foreground">
-            Due {new Date(reminder.dueDateUtc).toLocaleString()}
+            Due {formatDateTime(reminder.dueDateUtc)}
             {reminder.isCompleted &&
               reminder.completedAtUtc &&
-              ` · Completed ${new Date(reminder.completedAtUtc).toLocaleString()}`}
+              ` · Completed ${formatDateTime(reminder.completedAtUtc)}`}
           </p>
         </div>
         <div className="flex shrink-0 gap-1">

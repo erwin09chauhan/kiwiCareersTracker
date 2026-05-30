@@ -7,6 +7,7 @@ import type { Note } from "@/types/note"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
+import { formatDateTime } from "@/lib/date"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -79,7 +80,7 @@ function NoteItem({ applicationId, note }: { applicationId: string; note: Note }
             <p className="text-sm whitespace-pre-wrap">{note.content}</p>
             <div className="flex items-center justify-between">
               <p className="text-xs text-muted-foreground">
-                {new Date(note.createdAtUtc).toLocaleString()}
+                {formatDateTime(note.createdAtUtc)}
                 {note.updatedAtUtc && " (edited)"}
               </p>
               <div className="flex gap-1">

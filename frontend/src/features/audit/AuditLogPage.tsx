@@ -2,6 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 import { auditLogApi } from "@/api/auditLog"
 import { statusLabel } from "@/lib/status"
+import { formatDateTime } from "@/lib/date"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 
@@ -50,7 +51,7 @@ export function AuditLogPage() {
                   <p className="text-sm text-muted-foreground whitespace-pre-wrap">{entry.notes}</p>
                 )}
                 <p className="text-xs text-muted-foreground">
-                  {new Date(entry.createdAtUtc).toLocaleString()}
+                  {formatDateTime(entry.createdAtUtc)}
                 </p>
               </CardContent>
             </Card>

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { auditLogApi } from "@/api/auditLog";
 import { statusLabel } from "@/lib/status";
+import { formatDateTime } from "@/lib/date";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function AuditLogTab({ applicationId }: { applicationId: string }) {
@@ -49,7 +50,7 @@ export function AuditLogTab({ applicationId }: { applicationId: string }) {
               </p>
             )}
             <p className="text-xs text-muted-foreground">
-              {new Date(entry.createdAtUtc).toLocaleString()}
+              {formatDateTime(entry.createdAtUtc)}
             </p>
           </CardContent>
         </Card>

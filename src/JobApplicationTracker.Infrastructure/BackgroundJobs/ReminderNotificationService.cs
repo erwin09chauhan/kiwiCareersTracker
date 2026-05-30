@@ -71,7 +71,7 @@ public class ReminderNotificationService : BackgroundService
             {
                 UserId = reminder.Application.UserId,
                 Title = "Reminder due",
-                Message = $"\"{reminder.Title}\" is due {reminder.DueDateUtc:f}.",
+                Message = $"\"{reminder.Title}\" is due {FormatDueDate(reminder.DueDateUtc)}.",
                 RelatedApplicationId = reminder.ApplicationId
             };
 
@@ -90,5 +90,20 @@ public class ReminderNotificationService : BackgroundService
         }
 
         _logger.LogInformation("Created {Count} reminder due notification(s)", notifications.Count);
+    }
+
+    private static string FormatDueDate(DateTime dueDateUtc)
+    {
+        var day = dueDateUtc.Day;
+        var suffix = (day % 10, day) switch
+        {
+            (_, 11) or (_, 12) or (_, 13) => "th",
+            (1, _) => "st",
+            (2, _) => "nd",
+            (3, _) => "rd",
+            _ => "th"
+        };
+
+        return dueDateUtc.ToString($"d'{suffix}' MMMM yyyy, HH:mm");
     }
 }

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/popover";
 import { useEffect } from "react";
 import { getNotificationsConnection } from "@/lib/signalr";
+import { formatDateTime } from "@/lib/date";
 
 export function NotificationsDropdown() {
   const queryClient = useQueryClient();
@@ -116,7 +117,7 @@ export function NotificationsDropdown() {
                   {notification.message}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {new Date(notification.createdAtUtc).toLocaleString()}
+                  {formatDateTime(notification.createdAtUtc)}
                 </p>
               </div>
               <Button

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 import { remindersApi } from "@/api/reminders"
 import { Card, CardContent } from "@/components/ui/card"
+import { formatDateTime } from "@/lib/date"
 
 export function RemindersPage() {
   const query = useQuery({
@@ -33,7 +34,7 @@ export function RemindersPage() {
                   </p>
                 )}
                 <p className="text-xs text-muted-foreground">
-                  Due {new Date(reminder.dueDateUtc).toLocaleString()}
+                  Due {formatDateTime(reminder.dueDateUtc)}
                 </p>
               </CardContent>
             </Card>

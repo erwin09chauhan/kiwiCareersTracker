@@ -8,6 +8,7 @@ import {
   type ApplicationStatus,
 } from "@/types/application";
 import { statusLabel, statusBadgeClass } from "@/lib/status";
+import { formatDate } from "@/lib/date";
 import { EditApplicationDialog } from "@/features/applications/EditApplicationDialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -100,7 +101,7 @@ export function ApplicationDetailPage() {
           </h2>
           <p className="text-muted-foreground">{app.role}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Applied {new Date(app.appliedDate).toLocaleDateString()}
+            Applied {formatDate(app.appliedDate)}
           </p>
         </div>
 
