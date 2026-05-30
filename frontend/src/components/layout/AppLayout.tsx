@@ -34,7 +34,7 @@ export function AppLayout() {
     <>
       <div className="border-b px-6 py-5">
         <h1 className="text-sm font-semibold tracking-wide uppercase">
-          Kiwi Careers
+          Kiwi Careers Tracker
         </h1>
         {email && (
           <p className="mt-0.5 truncate text-xs text-muted-foreground">
