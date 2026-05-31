@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="frontend/public/favicon.svg" width="64" height="64" alt="Kiwi Careers Tracker logo" />
-</p>
-
 <h1 align="center">Kiwi Careers Tracker</h1>
 
 <p align="center">
@@ -43,11 +39,11 @@ The backend is a **.NET 10 Clean Architecture** API (Domain/Application/Infrastr
 ## Screenshots
 
 | Dashboard                                    | Applications                                       |
-| --------------------------------------------- | ---------------------------------------------------- |
+| -------------------------------------------- | -------------------------------------------------- |
 | ![Dashboard](docs/screenshots-dashboard.png) | ![Applications](docs/screenshots-applications.png) |
 
 | Application Detail                                            | Live Audits & Reminders                                                 |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | ![Application detail](docs/screenshot-application-detail.png) | ![Live audits and reminders](docs/screenshot-live-audits-reminders.png) |
 
 ---
@@ -123,14 +119,14 @@ Frontend available at `http://localhost:5173`. Set `VITE_API_URL=http://localhos
 ## Environment Variables
 
 | Variable                                                             | Description                                                                                  |
-| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | `ConnectionStrings__Postgres`                                        | Postgres connection string                                                                   |
 | `ConnectionStrings__Redis`                                           | Redis connection string                                                                      |
 | `RabbitMq__ConnectionString` (or `RabbitMq__Host/Username/Password`) | RabbitMQ connection — full AMQP URI for hosted brokers, or discrete host/user/pass for local |
-| `Jwt__Secret` / `Issuer` / `Audience`                                | JWT signing config                                                                            |
-| `Cors__AllowedOrigins__0`, `__1`, ...                                | CORS allowed origins (frontend URL(s))                                                        |
+| `Jwt__Secret` / `Issuer` / `Audience`                                | JWT signing config                                                                           |
+| `Cors__AllowedOrigins__0`, `__1`, ...                                | CORS allowed origins (frontend URL(s))                                                       |
 | `ApplyMigrationsOnStartup`                                           | If `true`, runs EF Core migrations automatically on startup                                  |
-| `VITE_API_URL` (frontend)                                            | Base URL of the backend API                                                                   |
+| `VITE_API_URL` (frontend)                                            | Base URL of the backend API                                                                  |
 
 A full reference for local dev is in [`.env.example`](.env.example).
 
