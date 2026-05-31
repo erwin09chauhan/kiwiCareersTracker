@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Pencil, Trash2, Mail, Phone, Link2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Mail, Phone, Link2 } from "lucide-react";
 import { contactsApi } from "@/api/contacts";
 import { ContactDialog } from "@/features/applications/contacts/ContactDialog";
 import { Button } from "@/components/ui/button";
@@ -39,12 +39,15 @@ export function ContactsTab({ applicationId }: { applicationId: string }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
-        <ContactDialog
-          applicationId={applicationId}
-          trigger={<Button>Add Contact</Button>}
-        />
-      </div>
+      <ContactDialog
+        applicationId={applicationId}
+        trigger={
+          <Button size="sm">
+            <Plus className="size-4" />
+            Add Contact
+          </Button>
+        }
+      />
 
       {query.isLoading && (
         <p className="text-sm text-muted-foreground">Loading...</p>

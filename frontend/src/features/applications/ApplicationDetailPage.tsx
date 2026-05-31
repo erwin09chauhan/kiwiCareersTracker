@@ -94,64 +94,76 @@ export function ApplicationDetailPage() {
           Back to applications
         </Link>
       </div>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h2 className="text-2xl font-semibold tracking-tight">
-            {app.company}
-          </h2>
-          <p className="text-muted-foreground">{app.role}</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Applied {formatDate(app.appliedDate)}
-          </p>
-        </div>
+      <div className="rounded-lg border bg-card p-4 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-3">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Company
+              </p>
+              <p className="text-lg capitalize">{app.company}</p>
+            </div>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Position
+              </p>
+              <p className="text-lg capitalize">{app.role}</p>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Applied {formatDate(app.appliedDate)}
+            </p>
+          </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <Select
-            value={app.status}
-            onValueChange={(v) => statusMutation.mutate(v as ApplicationStatus)}
-          >
-            <SelectTrigger
-              className={`w-44 border-0 ${statusBadgeClass(app.status)}`}
+          <div className="flex flex-wrap items-center gap-2">
+            <Select
+              value={app.status}
+              onValueChange={(v) =>
+                statusMutation.mutate(v as ApplicationStatus)
+              }
             >
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {APPLICATION_STATUSES.map((s) => (
-                <SelectItem key={s} value={s}>
-                  {statusLabel(s)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <EditApplicationDialog application={app} />
-
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="text-destructive"
+              <SelectTrigger
+                className={`w-44 border-0 ${statusBadgeClass(app.status)}`}
               >
-                <Trash2 className="size-4" />
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Delete this application?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This will permanently delete the application for {app.role} at{" "}
-                  {app.company}. This action cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => deleteMutation.mutate()}>
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {APPLICATION_STATUSES.map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {statusLabel(s)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <EditApplicationDialog application={app} />
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="text-destructive"
+                >
+                  <Trash2 className="size-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete this application?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will permanently delete the application for {app.role}{" "}
+                    at {app.company}. This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => deleteMutation.mutate()}>
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
       </div>
       <Tabs defaultValue="contacts">
